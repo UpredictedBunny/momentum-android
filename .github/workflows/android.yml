@@ -17,12 +17,14 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip python3-venv git zip unzip openjdk-17-jdk autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev libffi-dev libsqlite3-dev build-essential ccache
+          sudo apt-get install -y python3-pip python3-venv git zip unzip openjdk-17-jdk autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libssl-dev libffi-dev libsqlite3-dev build-essential ccache
 
       - name: Set Java 17
         run: |
           sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+          sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
           java -version
+          javac -version
 
       - name: Create build environment
         run: |
@@ -30,13 +32,15 @@ jobs:
           source ~/buildozer-env/bin/activate
           python --version
           pip install --upgrade pip setuptools wheel
-          pip install buildozer Cython==3.0.11
+          pip install buildozer Cython==0.29.34
 
       - name: Verify Android build configuration
         run: |
-          grep -E '^(requirements|android.api|android.minapi|android.ndk|android.archs|android.accept_sdk_license)' buildozer.spec
+          grep -E '^(requirements|p4a.branch|android.api|android.minapi|android.ndk|android.archs|android.accept_sdk_license)' buildozer.spec
           source ~/buildozer-env/bin/activate
           buildozer --version
+          python --version
+          python -c "import Cython; print('Cython', Cython.__version__)"
 
       - name: Build APK
         run: |
@@ -48,8 +52,9 @@ jobs:
       - name: Verify APK
         run: |
           set -e
-          test -n "$(find bin -maxdepth 1 -type f -name '*.apk' -print -quit)"
-          ls -lh bin/*.apk
+          apk="$(find bin -maxdepth 1 -type f -name '*.apk' -print -quit)"
+          test -n "$apk"
+          ls -lh "$apk"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
