@@ -37,6 +37,10 @@ android.ndk = 25b
 # Single-arch debug build — arm64-v8a covers all modern Android phones
 android.archs = arm64-v8a
 
+# Automatically accept Android SDK licenses in CI.
+# Required for non-interactive GitHub Actions builds.
+android.accept_sdk_license = True
+
 # Orientation: portrait-first
 orientation = portrait
 
