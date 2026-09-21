@@ -1,0 +1,44 @@
+name: Build Momentum Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip python3-venv git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev libffi-dev libsqlite3-dev build-essential ccache
+
+      - name: Set Java 17
+        run: |
+          sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+          java -version
+
+      - name: Create build environment
+        run: |
+          python3 -m venv ~/buildozer-env
+          source ~/buildozer-env/bin/activate
+          pip install --upgrade pip
+          pip install buildozer cython
+
+      - name: Build APK
+        run: |
+          source ~/buildozer-env/bin/activate
+          buildozer android debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Momentum-v1.0.0-Android-debug
+          path: bin/*.apk
+          if-no-files-found: error
