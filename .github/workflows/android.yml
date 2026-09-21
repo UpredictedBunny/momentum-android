@@ -17,7 +17,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip python3-venv git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev libffi-dev libsqlite3-dev build-essential ccache
+          sudo apt-get install -y python3-pip python3-venv git zip unzip openjdk-17-jdk autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev libffi-dev libsqlite3-dev build-essential ccache
 
       - name: Set Java 17
         run: |
@@ -28,13 +28,28 @@ jobs:
         run: |
           python3 -m venv ~/buildozer-env
           source ~/buildozer-env/bin/activate
-          pip install --upgrade pip
-          pip install buildozer cython
+          python --version
+          pip install --upgrade pip setuptools wheel
+          pip install buildozer Cython==3.0.11
+
+      - name: Verify Android build configuration
+        run: |
+          grep -E '^(requirements|android.api|android.minapi|android.ndk|android.archs|android.accept_sdk_license)' buildozer.spec
+          source ~/buildozer-env/bin/activate
+          buildozer --version
 
       - name: Build APK
         run: |
           source ~/buildozer-env/bin/activate
-          buildozer android debug
+          yes | buildozer -v android clean || true
+          rm -rf .buildozer/android/platform/python-for-android
+          yes | buildozer -v android debug
+
+      - name: Verify APK
+        run: |
+          set -e
+          test -n "$(find bin -maxdepth 1 -type f -name '*.apk' -print -quit)"
+          ls -lh bin/*.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
