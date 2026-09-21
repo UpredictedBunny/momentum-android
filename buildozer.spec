@@ -20,7 +20,7 @@ source.main = main.py
 # and must NOT appear here — p4a has no separate recipe for it.
 # customtkinter, pyinstaller, matplotlib are intentionally excluded.
 # plyer provides Android notifications.
-requirements = python3,kivy==2.3.0,kivymd==1.2.0,plyer
+requirements = python3==3.11.9,kivy==2.3.1,kivymd==1.2.0,plyer
 
 # ---- Android ---------------------------------------------------------
 android.permissions = INTERNET,RECEIVE_BOOT_COMPLETED,VIBRATE,POST_NOTIFICATIONS,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
@@ -31,7 +31,7 @@ android.minapi = 21
 # Target SDK 33 = Android 13
 android.api = 33
 
-# NDK r25b (matches current Buildozer/p4a default)
+# NDK r25b — stable with the pinned Python 3.11 / Kivy 2.3.1 Android toolchain
 android.ndk = 25b
 
 # Single-arch debug build — arm64-v8a covers all modern Android phones
