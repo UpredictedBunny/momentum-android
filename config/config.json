@@ -1,0 +1,88 @@
+{
+  "app": {
+    "name": "Momentum",
+    "version": "1.0.0",
+    "window_width": 1280,
+    "window_height": 800,
+    "min_width": 1000,
+    "min_height": 640
+  },
+  "theme": {
+    "mode": "dark",
+    "accent": "#4F8EF7",
+    "secondary": "#22C55E",
+    "danger": "#EF4444",
+    "corner_radius": 14,
+    "font_family": "Segoe UI",
+    "font_size_body": 14,
+    "font_size_heading": 22
+  },
+  "database": {
+    "path": "data/momentum.db",
+    "backup_dir": "backups",
+    "auto_backup": true,
+    "backup_time": "23:55"
+  },
+  "notifications": {
+    "morning_reminder_time": "07:00",
+    "night_reminder_time": "22:00",
+    "procrastination_check_minutes": 180,
+    "enabled": true
+  },
+  "routine": {
+    "morning_items": [
+      "Wake Up",
+      "Drink Water",
+      "Breakfast",
+      "Study",
+      "Freelancing",
+      "AI Learning",
+      "Gym",
+      "Reading",
+      "Gaming",
+      "Sleep"
+    ]
+  },
+  "habits": [
+    "Study",
+    "Project",
+    "Gym",
+    "Reading",
+    "Sleep before 11",
+    "Water",
+    "Meditation"
+  ],
+  "pomodoro": {
+    "presets": [
+      {
+        "name": "Classic",
+        "focus_minutes": 25,
+        "break_minutes": 5
+      },
+      {
+        "name": "Extended",
+        "focus_minutes": 50,
+        "break_minutes": 10
+      }
+    ]
+  },
+  "gamification": {
+    "xp_per_task": 10,
+    "xp_per_habit": 15,
+    "xp_per_pomodoro": 20,
+    "level_xp_curve": 100
+  },
+  "streak_milestones": [
+    7,
+    14,
+    30,
+    60,
+    90
+  ],
+  "logging": {
+    "level": "INFO",
+    "file": "logs/momentum.log",
+    "max_bytes": 1048576,
+    "backup_count": 3
+  }
+}
